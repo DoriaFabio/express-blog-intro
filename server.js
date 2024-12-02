@@ -17,20 +17,37 @@ const PORT = 5500;
 //definisco dove sono gli asset statici
 app.use(express.static("public")); //http://localhost:5500/
 
-const post = require("./data/post.js");
+const posts = require("./data/post.js");
 
-//rotte
+//rotta /
 app.get("/", (req, res) => {
   res.send("<h1>Server del mio blog</h1>");
 });
 
+// rotta bacheca
 app.get("/bacheca", (req, res) => {
-    //console.log("request:", req);
-    //console.log("response: ", res);
-    // http://localhost:5500/pizzas?name=margherita&ingredients=sale
-    //console.log(req.query);
-
+    res.json({
+        posts: posts,
+        counter: posts.length,
+      });
   });
+
+// rotta immagini
+app.get("/ciambellone", (req, res) => {
+    res.send(`<img src="images/ciambellone.jpeg">`);
+});
+app.get("/cracker", (req, res) => {
+    res.send(`<img src="images/cracker_barbabietola.jpeg">`);
+});
+app.get("/pane", (req, res) => {
+    res.send(`<img src="images/pane_fritto_dolce.jpeg">`);
+});
+app.get("/pasta", (req, res) => {
+    res.send(`<img src="images/pasta_barbabietola.jpeg">`);
+});
+app.get("/torta", (req, res) => {
+    res.send(`<img src="images/torta_paesana.jpeg">`);
+});
 
 //rotta fallback
 app.all("*", (req, res) => {
