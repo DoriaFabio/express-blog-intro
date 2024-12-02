@@ -31,4 +31,4 @@ const posts = [
     }
 ];
 
-console.log(posts);
+module.exports = posts;
