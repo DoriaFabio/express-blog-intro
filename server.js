@@ -26,34 +26,46 @@ app.get("/", (req, res) => {
 
 // rotta bacheca
 app.get("/bacheca", (req, res) => {
-    res.json({
-        posts: posts,
-        counter: posts.length,
-      });
-  });
+  let response = {
+    data: posts,
+    counter: posts.length,
+  };
+  const postTitolo = req.query.titolo;
+  if (postTitolo) {
+    response.data = posts.filter(post => post.titolo.toLowerCase().includes(postTitolo.toLowerCase()));
+    if (response.data.length < 1) {
+      res.status(404);
+      response = {
+        error: 404,
+        message: "Non ci sono post con questa ricerca"
+      }
+    }
+  }
+  res.json(response);
+});
 
 // rotta immagini
 app.get("/ciambellone", (req, res) => {
-    res.send(`<img src="images/ciambellone.jpeg">`);
+  res.send(`<img src="images/ciambellone.jpeg">`);
 });
 app.get("/cracker", (req, res) => {
-    res.send(`<img src="images/cracker_barbabietola.jpeg">`);
+  res.send(`<img src="images/cracker_barbabietola.jpeg">`);
 });
 app.get("/pane", (req, res) => {
-    res.send(`<img src="images/pane_fritto_dolce.jpeg">`);
+  res.send(`<img src="images/pane_fritto_dolce.jpeg">`);
 });
 app.get("/pasta", (req, res) => {
-    res.send(`<img src="images/pasta_barbabietola.jpeg">`);
+  res.send(`<img src="images/pasta_barbabietola.jpeg">`);
 });
 app.get("/torta", (req, res) => {
-    res.send(`<img src="images/torta_paesana.jpeg">`);
+  res.send(`<img src="images/torta_paesana.jpeg">`);
 });
 
 //rotta fallback
 app.all("*", (req, res) => {
-    res.status(404).send("<h1>Error 404 - Not Found !</h1>");
-  });
-  
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}}`);
-  });
+  res.status(404).send("<h1>Error 404 - Not Found !</h1>");
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}}`);
+});
